@@ -41,7 +41,7 @@ extension DocumentBuilder {
         register("customObject", ObjectDefinition(className: "NSObject"))
         register("blurEffect", BasicBuilder(key: "style", format: .enumeration))
         // These tags are containers that do not need a builder
-        for noopElement in ["userDefinedRuntimeAttributes", "connections", "constraints", "resources", "image", "gestureRecognizers"] {
+        for noopElement in ["userDefinedRuntimeAttributes", "connections", "constraints", "resources", "image", "gestureRecognizers", "point", "namedColor"] {
             register(noopElement, NoOpBuilder())
         }
         // These are leaf containers that should do nothing
@@ -236,6 +236,15 @@ extension DocumentBuilder {
             ]
         )
         register("label", label)
+		
+		let safeArea = view.inherit(
+			className: "view.sa",
+			properties: [
+				.build("key", .string)
+			]
+		)
+		register("viewLayoutGuide", safeArea)
+		
         let navigationBar = view.inherit(
             className: "UINavigationBar",
             properties: [
@@ -245,6 +254,7 @@ extension DocumentBuilder {
             placeholder: true
         )
         register("navigationBar", navigationBar)
+		
         let pickerView = view.inherit(
             className: "UIPickerView",
             properties: [.build("showsSelectionIndicator", .boolean)]
